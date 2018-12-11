@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+        <meta content="telephone=no" name="format-detection">
+        <title>{{ handler.settings['blog_name'] }}{% block title%}{% end %}</title>
+        <link rel="icon" href='{{ static_url("img/Pomash.png") }}' />
+        <link rel="stylesheet" type="text/css" href='{{ static_url("css/style.css") }}'>
+        <link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css">
+        <link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css">
+        <link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css">
+        <link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script type="text/javascript" src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="//lib.baomitu.com/es6-promise/4.1.1/es6-promise.auto.min.js" async=""></script>
+        <link rel="alternate" type="application/rss+xml" href="/feed" title="{{ handler.settings['blog_name'] }}" />{% if handler.settings['analytics'] %}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ handler.settings['analytics'] }}"></script>
+        <script>window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', '{{ handler.settings["analytics"] }}');</script>
+            {% end %}
+        </head>
+        {% block head %}{% end %}
+    <body>
+        <div class="body_container">
+            <div id="header">
+                <div class="site-name">
+                    <h1 class="hidden">{{ handler.settings['blog_name'] }}</h1>
+                    <a id="logo" href="{{ handler.settings['blog_url'] }}">{{ handler.settings['blog_name'] }}</a>
+                    <p class="description">{{ handler.settings['blog_author'] }}'s blog</p>
+                </div>
+                <div id="nav-menu">
+                    {% block menu %}{% end %}
+                </div>
+            </div>
+            <div class="pure-g" id="layout">
+                <div class="pure-u-1 pure-u-md-3-4">
+                    <div class="content_container">
+                    {% block content %}{% end %}
+                    </div>
+                </div>
+                <div class="pure-u-1-4 hidden_mid_and_down">
+                    <div id="sidebar">
+                        <div class="widget">
+                            <form class="search-form" action="https://www.google.com/search" method="get" accept-charset="utf-8" target="_blank">
+                                <input type="text" name="q" maxlength="20" placeholder="Search">
+                                <input type="hidden" name="sitesearch" value="{{ handler.settings['blog_url'] }}"></form>
+                        </div>
+                        {% block sidebar %}{% end %}
+                    </div>
+                </div>
+                <div class="pure-u-1 pure-u-md-3-4">
+                    <div id="footer">Copyright © 2018 
+                        <a href="{{ handler.settings['blog_url'] }}" rel="nofollow">{{ handler.settings['blog_author'] }}</a>
+                        | <a href="/admin">Admin</a>
+                    </div>
+                </div>
+            </div>
+            <a class="show" id="rocket" href="/#top"></a>
+            <script type="text/javascript" src='{{ static_url("js/totop.js") }}' async=""></script>
+            <script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.js" async=""></script>
+            <script type="text/javascript" src='{{ static_url("js/fancybox.js") }}' async=""></script>
+            <link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.2/jquery.fancybox.min.css">
+            <script type="text/javascript" src='{{ static_url("js/codeblock-resizer.js") }}'></script>
+            <script type="text/javascript" src='{{ static_url("js/smartresize.js") }}'></script>
+        </div>
+    </body>
+</html>

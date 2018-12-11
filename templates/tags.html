@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block title %} | Tags{% end %}
+
+{% block menu %}
+<a href="{{ handler.settings['blog_url'] }}">
+    <i class="fa fa-home"> Home</i></a>
+<a href="/articles">
+    <i class="fa fa-archive"> Articles</i></a>
+<a class="current" href="/tags">
+    <i class="fa fa-star"> Tags</i></a>
+{% for page in handler.get_custom_page() %}
+<a href="/page/custom/{{ page.id }}">
+    <i class="fa fa-external-link"> {{ page.title }}</i></a>
+{% end %}
+{% end %}
+
+{% block content %}
+<div class="post">
+    <div class="post-archive">
+            <div class="tagcloud">
+                {% for tag in tags %}
+                    <a href="/tag/{{ handler.urlencode(tag.name) }}" style="font-size:17px;">#{{ tag.name }} </a>
+                {% end %}
+            </div>
+    </div>
+</div>
+{% end %}

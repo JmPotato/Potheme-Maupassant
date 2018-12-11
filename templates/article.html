@@ -1,0 +1,108 @@
+{% extends 'layout.html' %}
+{% import re %}
+
+{% block title %} | {{ article.title }}{% end %}
+
+{% block menu %}
+    <a href="{{ handler.settings['blog_url'] }}">
+        <i class="fa fa-home"> Home</i></a>
+    <a href="/articles">
+        <i class="fa fa-archive"> Articles</i></a>
+    <a href="/tags">
+        <i class="fa fa-star"> Tags</i></a>
+    {% for page in handler.get_custom_page() %}
+    <a href="/page/custom/{{ page.id }}">
+        <i class="fa fa-external-link"> {{ page.title }}</i></a>
+    {% end %}
+{% end %}
+
+{% block head %}
+    {% if twitter_card %}
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="{{ twitter_username }}">
+        <meta name="twitter:title" content="{{ article.title }}">
+        <meta name="twitter:description" content="{{ handler.description(handler.md_to_html(article.content)) }}">
+        <meta name="twitter:creator" content="{{ twitter_username }}">
+        <meta name="twitter:domain" content="{{ handler.settings['blog_url'] }}">
+    {% end %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.getElementById("article"), {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false}
+                ]});
+        });
+    </script>
+{% end %}
+
+{% block sidebar %}
+<div class="widget">
+    <div class="widget-title">
+        <i class="fa fa-star-o"> Related Tags</i>
+    </div>
+    <div class="tagcloud">
+        {% for tag in tags %}
+            <a href="/tag/{{ handler.urlencode(tag) }}" style="font-size:15px;">{{ tag }}</a>
+        {% end %}
+    </div>
+</div>
+{% end %}
+
+{% block content %}
+<div class="post">
+    <h1 class="post-title">{{ article.title }}</h1>
+    <div class="post-meta">{{ article.datetime[:10] }}</div>
+    <div id="article" class="post-content">
+        {{ handler.md_to_html(article.content) }}
+    </div>
+    <div class="tags">
+        {% for tag in tags %}
+        <a href="/tag/{{ handler.urlencode(tag) }}">{{ tag }}</a>
+        {% end %}
+    </div>
+    <div class="post-nav">
+        {% if current_user %}
+        <a class="pre" onclick="if(confirm('Are you sure to delete this article?')){window.location.href='/admin/edit/delete/article/{{ article.id }}';}">Delete</a>
+        <a class="next" href="/admin/edit/article/{{ article.id }}">Edit</a>
+        {% end %}
+    </div>
+    <script src="//cdn.bootcss.com/react/16.0.0/umd/react.production.min.js"></script>
+    <script src="//cdn.bootcss.com/react-dom/16.0.0/umd/react-dom.production.min.js"></script>
+    <script src="//cdn.bootcss.com/fetch/2.0.3/fetch.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/blockies-identicon@0.1.0/blockies.min.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% if comment_system == 1 and disqus_name %}
+        <div id="disqus_proxy_thread"></div>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = '{{ disqus_name.strip().lstrip() }}';
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    {% elif comment_system == 2 and valine_app_id and valine_app_key %}
+        <script src='{{ static_url("js/av-min.js") }}'></script>
+        <script src='{{ static_url("js/Valine.js") }}'></script>
+        <div id="vcomments"></div>
+        <script>
+            new Valine({
+                el: '#vcomments',
+                appId: '{{ valine_app_id }}',
+                appKey: '{{ valine_app_key }}',
+                notify: false,
+                verify: false,
+                lang: 'en',
+                avatar: 'mm',
+                placeholder: 'Make sure your comments are useful to others :)'
+            })
+        </script>
+    {% end %}
+</div>
+{% end %}

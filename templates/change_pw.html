@@ -1,0 +1,50 @@
+{% extends 'admin-layout.html' %}
+
+{% block title %} | Change Password{% end %}
+
+{% block head %}
+<script>
+    function Check() {
+        if (document.getElementById("n_password").value != document.getElementById("n_password_c").value) {
+            alert("New passwords don't match");
+            document.getElementById("n_password").value= "";
+            document.getElementById("n_password_c").value = "";
+        }
+        else document.getElementById("change_pw").submit();
+    }
+</script>
+{% end %}
+
+{% block menu %}
+    <a href="/admin">
+        <i class="fa fa-tachometer"> Panel</i></a>
+    <a href="/admin/edit/new/article">
+        <i class="fa fa-pencil"> Write</i></a>
+    <a href="/admin/edit/new/page">
+        <i class="fa fa-file"> Creat</i></a>
+    <a href="/admin/dropbox">
+        <i class="fa fa-dropbox"> Backup</i></a>
+    <a href="{{ handler.settings['blog_url'] }}">
+        <i class="fa fa-sign-out"> Leave</i></a>
+{% end %}
+
+{% block panel %}
+    {% if message %}
+    <h1 class="post-title" style="text-align:center;">{{ message }}</h1>
+    {% else %}
+    <h1 class="post-title" style="text-align:center;">Change your password</h1>
+    {% end %}
+    <hr>
+    <div id="article" class="post-content">
+    <div class="item">
+        <form class="login-form" action="#" method="post" id="change_pw">
+            <div><input id="o_password" name="o_password" type="password" placeholder="Old password"></div>
+            <div><input id="n_password" name="n_password" type="password" placeholder="New password"></div>
+            <div><input id="n_password_c" name="n_password_c" type="password" placeholder="Confirm your new password"></div>
+            <div>
+                <button class="login" type="button" onclick="Check()">Submit</button>
+            </div>
+        </form>
+    </div>
+    </div>
+{% end %}

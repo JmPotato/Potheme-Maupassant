@@ -1,0 +1,34 @@
+{% extends 'admin-layout.html' %}
+
+{% block title %} | Dropbox{% end %}
+
+{% block menu %}
+    <a href="/admin">
+        <i class="fa fa-tachometer"> Panel</i></a>
+    <a href="/admin/edit/new/article">
+        <i class="fa fa-pencil"> Write</i></a>
+    <a href="/admin/edit/new/page">
+        <i class="fa fa-file"> Creat</i></a>
+    <a class="current" href="/admin/dropbox">
+        <i class="fa fa-dropbox"> Backup</i></a>
+    <a href="{{ handler.settings['blog_url'] }}">
+        <i class="fa fa-sign-out"> Leave</i></a>
+{% end %}
+
+{% block panel %}
+<div class="post">
+    <h1 class="post-title" style="text-align:center;">Dropbox Backup</h1>
+    <hr>
+    <div id="article" class="post-content">
+    {% if not authorized %}
+        <p>Please modify the settings.py and fill in your dropbox app token.</p>
+    {% else %}
+        <p>
+            <a href="/admin/dropbox/start" style="margin-top:6px;">Backup</a>
+            <a href="/admin/dropbox/load" style="margin-top:6px;">Restore</a>
+        </p>
+        <p>{{ message }}</p>
+    {% end %}
+    </div>
+</div>
+{% end %}
