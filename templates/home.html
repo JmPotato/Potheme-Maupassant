@@ -54,57 +54,65 @@
     {% if count > post_per_page %}
     <nav class="page-navigator">
         {% if page_number-1 > 0 %}
-        <a class="extend prev" rel="prev" href="/page/{{ page_number-1 }}">Prev</a>
-        {% end %}
-        {% if int(count/post_per_page)+1 >= 8 %}
-        {% if page_number < 4 %}
-        {% for i in range(1, 5) %}
-        {% if i == page_number %}
-        <span class="page-number current">{{ page_number }}</span>
+            <a class="extend prev" rel="prev" href="/page/{{ page_number-1 }}">Prev</a>
         {% else %}
-        <a class="page-number" href="/page/{{ i }}">{{ i }}</a>
+            <a class="extend prev" rel="prev" style="visibility:hidden">Prev</a>
         {% end %}
-        {% end %}
-        <span class="space">…</span>
-        <a class="page-number" href="/page/{{ int(count/post_per_page)+1 }}">{{ int(count/post_per_page)+1 }}</a>
-        {% end %}
-        {% if page_number > 3 and page_number < int(count/post_per_page)-1 %}
-        <a class="page-number" href="/">1</a>
-        <span class="space">…</span>
-        <a class="page-number" href="/page/{{ page_number-2 }}">{{ page_number-2 }}</a>
-        <a class="page-number" href="/page/{{ page_number-1 }}">{{ page_number-1 }}</a>
-        <span class="page-number current">{{ page_number }}</span>
-        <a class="page-number" href="/page/{{ page_number+1 }}">{{ page_number+1 }}</a>
-        <a class="page-number" href="/page/{{ page_number+2 }}">{{ page_number+2 }}</a>
-        <span class="space">…</span>
-        <a class="page-number" href="/">{{ int(count/post_per_page)+1 }}</a>
-        {% end %}
-        {% if page_number > int(count/post_per_page)-2 %}
-        <a class="page-number" href="/">1</a>
-        <span class="space">…</span>
-        {% for i in range(int(count/post_per_page)-2, int(count/post_per_page)+2) %}
-        {% if i == page_number %}
-        <span class="page-number current">{{ page_number }}</span>
+
+        {% if max_page >= 8 %}
+            {% if page_number < 4 %}
+                {% for i in range(1, 5) %}
+                    {% if i == page_number %}
+                        <span class="page-number current">{{ page_number }}</span>
+                    {% else %}
+                        <a class="page-number" href="/page/{{ i }}">{{ i }}</a>
+                    {% end %}
+                {% end %}
+                <span class="space">…</span>
+                <a class="page-number" href="/page/{{ max_page }}">{{ max_page }}</a>
+            {% end %}
+
+            {% if page_number > 3 and page_number < max_page-2 %}
+                <a class="page-number" href="/">1</a>
+                <span class="space">…</span>
+                <a class="page-number" href="/page/{{ page_number-2 }}">{{ page_number-2 }}</a>
+                <a class="page-number" href="/page/{{ page_number-1 }}">{{ page_number-1 }}</a>
+                <span class="page-number current">{{ page_number }}</span>
+                <a class="page-number" href="/page/{{ page_number+1 }}">{{ page_number+1 }}</a>
+                <a class="page-number" href="/page/{{ page_number+2 }}">{{ page_number+2 }}</a>
+                <span class="space">…</span>
+                <a class="page-number" href="/page/{{ max_page }}">{{ max_page }}</a>
+            {% end %}
+
+            {% if page_number > max_page-3 %}
+                <a class="page-number" href="/">1</a>
+                <span class="space">…</span>
+                {% for i in range(max_page-3, max_page+1) %}
+                    {% if i == page_number %}
+                        <span class="page-number current">{{ page_number }}</span>
+                    {% else %}
+                        <a class="page-number" href="/page/{{ i }}">{{ i }}</a>
+                    {% end %}
+                {% end %}
+            {% end %}
         {% else %}
-        <a class="page-number" href="/page/{{ i }}">{{ i }}</a>
+            {% for i in range(1, max_page+1) %}
+                {% if i < page_number %}
+                    <a class="page-number" href="/page/{{ i }}">{{ i }}</a>
+                {% end %}
+                {% if i == page_number %}
+                    <span class="page-number current">{{ page_number }}</span>
+                {% end %}
+                {% if i > page_number %}
+                    <a class="page-number" href="/page/{{ i }}">{{ i }}</a>
+                {% end %}
+            {% end %}
         {% end %}
-        {% end %}
-        {% end %}
-        {% else %}
-        {% for i in range(1, int(count/post_per_page)+2) %}
-        {% if i < page_number %}
-        <a class="page-number" href="/page/{{ i }}">{{ i }}</a>
-        {% end %}
-        {% if i == page_number %}
-        <span class="page-number current">{{ page_number }}</span>
-        {% end %}
-        {% if i > page_number %}
-        <a class="page-number" href="/page/{{ i }}">{{ i }}</a>
-        {% end %}
-        {% end %}
-        {% end %}
+
         {% if post_per_page*page_number < count %}
-        <a class="extend next" rel="next" href="/page/{{ page_number+1 }}">Next</a>
+            <a class="extend next" rel="next" href="/page/{{ page_number+1 }}">Next</a>
+        {% else %}
+            <a class="extend next" rel="next" style="visibility:hidden">Next</a>
         {% end %}
     </nav>
     {% end %}
