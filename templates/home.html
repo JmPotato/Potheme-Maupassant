@@ -71,11 +71,11 @@
         {% if page_number > 3 and page_number < int(count/post_per_page)-1 %}
         <a class="page-number" href="/">1</a>
         <span class="space">…</span>
-        <a class="page-number" href="/page/{{ page_number-1 }}">{{ page_number-2 }}</a>
-        <a class="page-number" href="/page/{{ page_number-2 }}">{{ page_number-1 }}</a>
+        <a class="page-number" href="/page/{{ page_number-2 }}">{{ page_number-2 }}</a>
+        <a class="page-number" href="/page/{{ page_number-1 }}">{{ page_number-1 }}</a>
         <span class="page-number current">{{ page_number }}</span>
-        <a class="page-number" href="/page/{{ page_number+2 }}">{{ page_number+1 }}</a>
-        <a class="page-number" href="/page/{{ page_number+1 }}">{{ page_number+2 }}</a>
+        <a class="page-number" href="/page/{{ page_number+1 }}">{{ page_number+1 }}</a>
+        <a class="page-number" href="/page/{{ page_number+2 }}">{{ page_number+2 }}</a>
         <span class="space">…</span>
         <a class="page-number" href="/">{{ int(count/post_per_page)+1 }}</a>
         {% end %}
