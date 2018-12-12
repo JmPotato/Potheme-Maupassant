@@ -19,7 +19,7 @@
         <i class="fa fa-star-o"> Recent Tags</i>
     </div>
     <div class="tagcloud">
-        {% for article in articlesList[:3] %}
+        {% for article in all_articles[:5] %}
             {% for tag in [tag.strip() for tag in article.tag.split(",")] %}
             <a href="/tag/{{ handler.urlencode(tag) }}" style="font-size:15px;">{{ tag }}</a>
             {% end %}
@@ -30,7 +30,7 @@
     <div class="widget-title">
         <i class="fa fa-file-o"> Recent Articles</i></div>
     <ul class="post-list">
-        {% for article in articlesList[:5] %}
+        {% for article in all_articles[:10] %}
         <li class="post-list-item">
             <a class="post-list-link" href="/article/{{ article.id }}">{{ article.title }}</a>
         </li>
