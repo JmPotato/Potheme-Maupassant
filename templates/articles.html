@@ -43,6 +43,7 @@
 
 {% block content %}
 <div class="post">
+    <h1 class="post-title">Articles</h1>
     <div id="article" class="post-content">
         {% for year in sorted(articlesList.keys(), reverse = True) %}
             <h2>{{ year }}</h2>
