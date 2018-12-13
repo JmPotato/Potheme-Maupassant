@@ -290,7 +290,8 @@ div {
         margin: 0 5px;
         padding: 0 5px;
         background: #f7f8f8;
-        font-family: Menlo, Consolas, monospace !important; }
+        font-family: Menlo, Consolas, monospace !important;
+        word-break: break-all}
       .post .post-content p a {
         color: #01579f;
         padding-bottom: 2px;
@@ -324,7 +325,8 @@ div {
         margin: 0 5px;
         padding: 0px 5px;
         background: #f7f8f8;
-        font-family: Menlo, Consolas, monospace !important; }
+        font-family: Menlo, Consolas, monospace !important;
+        word-break: break-all}
       .post .post-content ul a, .post .post-content ol a {
         color: #01579f;
         padding-bottom: 2px;
