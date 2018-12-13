@@ -3,16 +3,17 @@
 {% block title %} | Tags{% end %}
 
 {% block menu %}
-<a href="{{ handler.settings['blog_url'] }}">
-    <i class="fa fa-home"> Home</i></a>
-<a href="/articles">
-    <i class="fa fa-archive"> Articles</i></a>
-<a class="current" href="/tags">
-    <i class="fa fa-star"> Tags</i></a>
-{% for page in handler.get_custom_page() %}
-<a href="/page/custom/{{ page.id }}">
-    <i class="fa fa-external-link"> {{ page.title }}</i></a>
-{% end %}
+    <a href="{{ handler.settings['blog_url'] }}">
+        <i class="fa fa-home"> Home</i></a>
+    <a href="/articles">
+        <i class="fa fa-archive"> Articles</i></a>
+    <a class="current" href="/tags">
+        <i class="fa fa-star"> Tags</i></a>
+    {% for page in handler.get_custom_page() %}
+    <a href="/page/custom/{{ page.id }}">
+        <i class="fa fa-external-link"> {{ page.title }}</i></a>
+    {% end %}
+    <a href="/feed"><i class="fa fa-rss"> Feed</i></a>
 {% end %}
 
 {% block sidebar %}
@@ -23,7 +24,7 @@
     <div class="tagcloud">
         {% for article in all_articles[:5] %}
             {% for tag in [tag.strip() for tag in article.tag.split(",")] %}
-            <a href="/tag/{{ handler.urlencode(tag) }}" style="font-size:15px;">{{ tag }}</a>
+            <a href="/tag/{{ handler.urlencode(tag) }}">{{ tag }}</a>
             {% end %}
         {% end %}
     </div>
@@ -43,13 +44,12 @@
 
 {% block content %}
 <div class="post">
-    <h1 class="post-title">Tags</h1>
-    <div id="article" class="post-content">
-        <div class="tags">
-            {% for tag in tags %}
-                <a href="/tag/{{ handler.urlencode(tag.name) }}" style="font-size:17px;">{{ tag.name }} </a>
-            {% end %}
-        </div>
+    <div class="post-archive">
+            <div class="tags">
+                {% for tag in tags %}
+                    <a href="/tag/{{ handler.urlencode(tag.name) }}">{{ tag.name }} </a>
+                {% end %}
+            </div>
     </div>
 </div>
 {% end %}

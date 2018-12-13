@@ -3,21 +3,22 @@
 {% block title %} | {{ article.title }}{% end %}
 
 {% block menu %}
-<a href="{{ handler.settings['blog_url'] }}">
-    <i class="fa fa-home"> Home</i></a>
-<a href="/articles">
-    <i class="fa fa-archive"> Articles</i></a>
-<a href="/tags">
-    <i class="fa fa-star"> Tags</i></a>
-{% for page in handler.get_custom_page() %}
-    {% if page.title == article.title %}
-    <a class="current" href="/page/custom/{{ page.id }}">
-        <i class="fa fa-external-link"> {{ page.title }}</i></a>
-    {% else %}
-    <a href="/page/custom/{{ page.id }}">
-        <i class="fa fa-external-link"> {{ page.title }}</i></a>
+    <a href="{{ handler.settings['blog_url'] }}">
+        <i class="fa fa-home"> Home</i></a>
+    <a href="/articles">
+        <i class="fa fa-archive"> Articles</i></a>
+    <a href="/tags">
+        <i class="fa fa-star"> Tags</i></a>
+    {% for page in handler.get_custom_page() %}
+        {% if page.title == article.title %}
+        <a class="current" href="/page/custom/{{ page.id }}">
+            <i class="fa fa-external-link"> {{ page.title }}</i></a>
+        {% else %}
+        <a href="/page/custom/{{ page.id }}">
+            <i class="fa fa-external-link"> {{ page.title }}</i></a>
+        {% end %}
     {% end %}
-{% end %}
+    <a href="/feed"><i class="fa fa-rss"> Feed</i></a>
 {% end %}
 
 {% block sidebar %}
@@ -28,7 +29,7 @@
     <div class="tagcloud">
         {% for post in all_articles[:5] %}
             {% for tag in [tag.strip() for tag in post.tag.split(",")] %}
-            <a href="/tag/{{ handler.urlencode(tag) }}" style="font-size:15px;">{{ tag }}</a>
+            <a href="/tag/{{ handler.urlencode(tag) }}">{{ tag }}</a>
             {% end %}
         {% end %}
     </div>

@@ -3,16 +3,17 @@
 {% block title %} | Articles{% end %}
 
 {% block menu %}
-<a href="{{ handler.settings['blog_url'] }}">
-    <i class="fa fa-home"> Home</i></a>
-<a class="current" href="/articles">
-    <i class="fa fa-archive"> Articles</i></a>
-<a href="/tags">
-    <i class="fa fa-star"> Tags</i></a>
-{% for page in handler.get_custom_page() %}
-<a href="/page/custom/{{ page.id }}">
-    <i class="fa fa-external-link"> {{ page.title }}</i></a>
-{% end %}
+    <a href="{{ handler.settings['blog_url'] }}">
+        <i class="fa fa-home"> Home</i></a>
+    <a class="current" href="/articles">
+        <i class="fa fa-archive"> Articles</i></a>
+    <a href="/tags">
+        <i class="fa fa-star"> Tags</i></a>
+    {% for page in handler.get_custom_page() %}
+    <a href="/page/custom/{{ page.id }}">
+        <i class="fa fa-external-link"> {{ page.title }}</i></a>
+    {% end %}
+    <a href="/feed"><i class="fa fa-rss"> Feed</i></a>
 {% end %}
 
 {% block sidebar %}
@@ -23,7 +24,7 @@
     <div class="tagcloud">
         {% for article in all_articles[:5] %}
             {% for tag in [tag.strip() for tag in article.tag.split(",")] %}
-            <a href="/tag/{{ handler.urlencode(tag) }}" style="font-size:15px;">{{ tag }}</a>
+            <a href="/tag/{{ handler.urlencode(tag) }}">{{ tag }}</a>
             {% end %}
         {% end %}
     </div>
@@ -43,8 +44,7 @@
 
 {% block content %}
 <div class="post">
-    <h1 class="post-title">Articles</h1>
-    <div id="article" class="post-content">
+    <div class="post-archive">
         {% for year in sorted(articlesList.keys(), reverse = True) %}
             <h2>{{ year }}</h2>
             <ul class="listing">

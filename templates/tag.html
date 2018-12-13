@@ -13,16 +13,49 @@
     <a href="/page/custom/{{ page.id }}">
         <i class="fa fa-external-link"> {{ page.title }}</i></a>
     {% end %}
+    <a href="/feed"><i class="fa fa-rss"> Feed</i></a>
+{% end %}
+
+{% block sidebar %}
+<div class="widget">
+    <div class="widget-title">
+        <i class="fa fa-star-o"> Recent Tags</i>
+    </div>
+    <div class="tagcloud">
+        {% for article in all_articles[:5] %}
+            {% for tag in [tag.strip() for tag in article.tag.split(",")] %}
+            <a href="/tag/{{ handler.urlencode(tag) }}">{{ tag }}</a>
+            {% end %}
+        {% end %}
+    </div>
+</div>
+<div class="widget">
+    <div class="widget-title">
+        <i class="fa fa-file-o"> Recent Articles</i></div>
+    <ul class="post-list">
+        {% for post in all_articles[:10] %}
+        <li class="post-list-item">
+            <a class="post-list-link" href="/article/{{ post.id }}">{{ post.title }}</a>
+        </li>
+        {% end %}
+    </ul>
+</div>
 {% end %}
 
 {% block content %}
+<h1 class="label-title">Tag: {{ tag_name }}</h1>
 <div class="post">
-    <h1 class="post-title">Tag: {{ tag_name }}</h1>
-    <div id="article" class="post-content">
-        {% for article in articlesList %}
-        <li>
-            <span class="meta">{{ article.datetime[:10] }}</span> <a href="/article/{{ article.article_id }}">{{ article.title }}</a>
-        </li>
+    <div id="article" class="post-archive">
+        {% for year in sorted(articlesList.keys(), reverse = True) %}
+        <h2>{{ year }}</h2>
+        <ul class="listing">
+            {% for i in range(len(articlesList[year])) %}
+            <li>
+                <span class="date">{{ articlesList[year][i].datetime[:10] }}</span>
+                <a href="/article/{{ articlesList[year][i].article_id }}" title="{{ articlesList[year][i].title }}">{{ articlesList[year][i].title }}</a>
+            </li>
+            {% end %}
+        </ul>
         {% end %}
     </div>
 </div>

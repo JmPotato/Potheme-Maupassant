@@ -14,6 +14,7 @@
     <a href="/page/custom/{{ page.id }}">
         <i class="fa fa-external-link"> {{ page.title }}</i></a>
     {% end %}
+    <a href="/feed"><i class="fa fa-rss"> Feed</i></a>
 {% end %}
 
 {% block head %}
@@ -42,13 +43,26 @@
 {% block sidebar %}
 <div class="widget">
     <div class="widget-title">
-        <i class="fa fa-star-o"> Related Tags</i>
+        <i class="fa fa-star-o"> Recent Tags</i>
     </div>
     <div class="tagcloud">
-        {% for tag in tags %}
-            <a href="/tag/{{ handler.urlencode(tag) }}" style="font-size:15px;">{{ tag }}</a>
+        {% for post in all_articles[:5] %}
+            {% for tag in [tag.strip() for tag in post.tag.split(",")] %}
+            <a href="/tag/{{ handler.urlencode(tag) }}">{{ tag }}</a>
+            {% end %}
         {% end %}
     </div>
+</div>
+<div class="widget">
+    <div class="widget-title">
+        <i class="fa fa-file-o"> Recent Articles</i></div>
+    <ul class="post-list">
+        {% for post in all_articles[:10] %}
+        <li class="post-list-item">
+            <a class="post-list-link" href="/article/{{ post.id }}">{{ post.title }}</a>
+        </li>
+        {% end %}
+    </ul>
 </div>
 {% end %}
 

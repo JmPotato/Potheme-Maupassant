@@ -11,6 +11,7 @@
     <a href="/page/custom/{{ page.id }}">
         <i class="fa fa-external-link"> {{ page.title }}</i></a>
     {% end %}
+    <a href="/feed"><i class="fa fa-rss"> Feed</i></a>
 {% end %}
 
 {% block sidebar %}
@@ -21,7 +22,7 @@
     <div class="tagcloud">
         {% for article in all_articles[:5] %}
             {% for tag in [tag.strip() for tag in article.tag.split(",")] %}
-            <a href="/tag/{{ handler.urlencode(tag) }}" style="font-size:15px;">{{ tag }}</a>
+            <a href="/tag/{{ handler.urlencode(tag) }}">{{ tag }}</a>
             {% end %}
         {% end %}
     </div>
