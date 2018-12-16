@@ -119,6 +119,14 @@
             ]
         });
     });
+    document.addEventListener("touchmove", function() {
+        renderMathInElement(document.getElementById("preview"), {
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false}
+            ]
+        });
+    });
     var editor = new Vue({
         el: '#editor',
         data: {
