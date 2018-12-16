@@ -4,59 +4,56 @@
 
 {% block head %}
 <script>
-function AutoSave(it) {
-    var _value = it.value;
-    if (_value) {
-
-        var expDays = 30;
-        var exp = new Date();
-        exp.setTime( exp.getTime() + (expDays * 86400000) );
-        var expires='; expires=' + exp.toGMTString();
-
-        document.cookie = "AutoSaveContent=" + escape (_value) + expires;
-    }
-}
-
-function AutoLoad(it) {
-    var _value = it.value;
-    if (!_value) {
+    function AutoSave(it) {
+        var _value = it.value;
         var _LastContent = GetCookie('AutoSaveContent');
-
-        if (!_LastContent) return;
-
-        if (confirm("Load Last AutoSave Content?")) {
-            it.value = _LastContent;
-            return true;
+        if (_value.length >= _LastContent.length) {
+            var expDays = 30;
+            var exp = new Date();
+            exp.setTime(exp.getTime() + (expDays * 86400000));
+            var expires = '; expires=' + exp.toGMTString();
+            document.cookie = "AutoSaveContent=" + escape(_value) + expires;
         }
     }
-}
 
-function getCookieVal (offset) {
-    var endstr=document.cookie.indexOf (";",offset);
-    if (endstr==-1) endstr=document.cookie.length;
-    return unescape(document.cookie.substring(offset, endstr));
-}
-
-function GetCookie (name){
-    var arg=name+"=";
-    var alen=arg.length;
-    var clen=document.cookie.length;
-    var i = 0;
-    while (i<clen){
-        var j=i+alen;
-        if (document.cookie.substring(i,j)==arg) return getCookieVal (j);
-        i = document.cookie.indexOf(" ",i)+1;
-        if (i==0) break;
+    function AutoLoad(it) {
+        var _value = it.value;
+        if (!_value) {
+            var _LastContent = GetCookie('AutoSaveContent');
+            if (!_LastContent) return;
+            if (confirm("Load Last AutoSave Content?")) {
+                it.value = _LastContent;
+                return true;
+            }
+        }
     }
-    return null;
-}
 
-function DeleteCookie (name) {
-    var exp=new Date();
-    exp.setTime (exp.getTime()-1);
-    var cval=GetCookie (name);
-    document.cookie=name+"="+cval+";expires="+exp.toGMTString();
-}
+    function getCookieVal(offset) {
+        var endstr = document.cookie.indexOf(";",offset);
+        if (endstr === -1) endstr = document.cookie.length;
+        return unescape(document.cookie.substring(offset, endstr));
+    }
+
+    function GetCookie(name) {
+        var arg = name+"=";
+        var alen = arg.length;
+        var clen = document.cookie.length;
+        var i = 0;
+        while (i < clen){
+            var j = i + alen;
+            if(document.cookie.substring(i,j) === arg) return getCookieVal (j);
+            i = document.cookie.indexOf(" ",i)+1;
+            if (i === 0) break;
+        }
+        return null;
+    }
+
+    function DeleteCookie (name) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval = GetCookie(name);
+        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+    }
 </script>
 {% end %}
 
@@ -74,63 +71,86 @@ function DeleteCookie (name) {
 {% end %}
 
 {% block panel %}
-<div class="post">
+<div class="post" id="editor">
     <h1 class="post-title" style="text-align:center;">Editor</h1>
     <hr>
-    <div id="article" class="post-content">
-    {% if is_page %}
-        <form class="login-form" action="#" method="post" id="page_editor">
-            <div class="input">
-                <label for="title">Title</label>
-                {% if new %}
-                <input id="title" name="title" type="text" style="width:95%;">
-                {% else %}
-                <input id="title" name="title" type="text" style="width:95%;" value="{{ content.title }}">
-                {% end %}
-            </div>
-            <div class="input">
-                <label for="content">Content</label>
-                {% if new %}
-                <textarea style="width:95%;" rows="30" id="content" name="content" onkeyup="AutoSave(this);" onchange="AutoSave(this);" ondblclick="AutoLoad(this);"></textarea>
-                {% else %}
-                <textarea style="width:95%;" rows="30" id="content" name="content" onkeyup="AutoSave(this);" onchange="AutoSave(this);" ondblclick="AutoLoad(this);">{{ content.content }}</textarea>
-                {% end %}
-                <p style="text-align:center;">Tip: Double click box to load last autosave content</p>
-            <div id="submit">
-                <button class="login" type="submit">Post</button>
-            </div>
-        </form>
-        {% else %}
+    <div id="editor" class="post-content">
         <form class="login-form" action="#" method="post" id="article_editor">
             <div class="input">
                 <label for="title">Title</label>
-                {% if new %}
-                <input id="title" name="title" type="text" style="width:95%;">
-                {% else %}
-                <input id="title" name="title" type="text" style="width:95%;" value="{{ article.title }}">
-                {% end %}
+                <input id="title" name="title" type="text" value="{% if not is_page and not new %}{{ article.title }}{% elif is_page and not new %}{{ content.title }}{% end %}" style="width:95%;">
             </div>
-            <div class="input">
+            <div v-if="!is_page" class="input">
                 <label for="tag">Tag</label>
-                {% if new %}
-                <input id="tag" name="tag" type="text" style="width:95%;">
-                {% else %}
-                <input id="tag" name="tag" type="text" style="width:95%;" value="{{ article.tag }}">
-                {% end %}
+                <input id="tag" name="tag" type="text" value="{% if not is_page and not new %}{{ article.tag }}{% end %}" style="width:95%;">
             </div>
             <div class="input">
                 <label for="content">Content</label>
-                {% if new %}
-                <textarea style="width:95%;" rows="30" id="content" name="content" onkeyup="AutoSave(this);"  onchange="AutoSave(this);"ondblclick="AutoLoad(this);"></textarea>
-                {% else %}
-                <textarea style="width:95%;" rows="30" id="content" name="content" onkeyup="AutoSave(this);"  onchange="AutoSave(this);"ondblclick="AutoLoad(this);">{{ article.content }}</textarea>
+                <textarea :value="input" @input="update" style="width:95%;" rows="30" id="content" name="content" onkeyup="AutoSave(this);" onchange="AutoSave(this);"ondblclick="AutoLoad(this);">
+                {% if is_page and not new %}
+                {{ content.content }}
+                {% elif not is_page and not new %}
+                {{ article.content }}
                 {% end %}
+                </textarea>
                 <p style="text-align:center;">Tip: Double click box to load last autosave content</p>
             <div id="submit" style="margin:auto">
                 <button class="login" type="submit">Post</button>
             </div>
         </form>
-        {% end %}
-    </article>
+    </div>
 </div>
+<hr>
+<h1 class="post-title" style="text-align:center;">Preview</h1>
+<hr>
+<div id="preview" class="post-content" v-html="compiledMarkdown"></div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src='{{ static_url("js/marked.min.js") }}'></script>
+<script src="https://unpkg.com/lodash@4.16.0"></script>
+<script>
+    document.addEventListener("wheel", function() {
+        renderMathInElement(document.getElementById("preview"), {
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false}
+            ]
+        });
+    });
+    var editor = new Vue({
+        el: '#editor',
+        data: {
+            {% if new %}
+            is_new: true,
+            input: '',
+            {% if is_page %}
+            is_page: true,
+            {% else %}
+            is_page: false,
+            {% end %}
+            {% else %}
+            is_new: false,
+            {% if is_page %}
+            is_page: true,
+            input: {{ json_encode(content.content) }}
+            {% else %}
+            is_page: false,
+            input: {{ json_encode(article.content) }}
+            {% end %}
+            {% end %}
+        },
+        computed: {
+            compiledMarkdown: function () {
+                return marked(this.input, { sanitize: true })
+            }
+        },
+        methods: {
+            update: _.debounce(function (e) {
+                this.input = e.target.value
+            }, 300)
+        }
+    });
+</script>
 {% end %}
