@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %} | {{ article.title }}{% end %}
+{% block title %} | {{ handler.get_pure_title(article.title) }}{% end %}
 
 {% block head %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
@@ -63,7 +63,8 @@
 
 {% block content %}
 <div class="post">
-    <div id="article" class="post-archive">
+    <div class="post-title">{{ handler.get_pure_title(article.title) }}</div>
+    <div id="article" class="post-content">
         {{ handler.md_to_html(article.content) }}
     </div>
 </div>
