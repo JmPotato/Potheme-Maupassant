@@ -11,11 +11,9 @@
         <i class="fa fa-star"> Tags</i></a>
     {% for page in handler.get_custom_page() %}
         {% if page.title == article.title %}
-        <a class="current" href="/page/custom/{{ page.id }}">
-            <i class="fa fa-external-link"> {{ page.title }}</i></a>
+        <a class="current" href="/page/custom/{{ page.id }}">{{ page.title }}</a>
         {% else %}
-        <a href="/page/custom/{{ page.id }}">
-            <i class="fa fa-external-link"> {{ page.title }}</i></a>
+        <a href="/page/custom/{{ page.id }}">{{ page.title }}</a>
         {% end %}
     {% end %}
     <a href="/feed"><i class="fa fa-rss"> Feed</i></a>
